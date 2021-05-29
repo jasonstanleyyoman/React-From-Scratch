@@ -1,11 +1,12 @@
+const TEXT_ELEMENT = "TEXT ELEMENT";
+
 function render(element, parentDom) {
     const { type, props = {} } = element;
-    const isTextElement = type === "TEXT ELEMENT";
+    const isTextElement = type === TEXT_ELEMENT;
 
-    const dom = isTextElement ?
-      document.createTextNode(""):
-      document.createElement(type);
-
+    const dom = isTextElement
+        ? document.createTextNode("")
+        : document.createElement(type);
 
     const isListener = function (prop) {
         return prop.startsWith("on");
@@ -32,4 +33,18 @@ function render(element, parentDom) {
     });
 
     parentDom.appendChild(dom);
+}
+
+function createElement(type, configs, ...args) {
+    const props = Object.assign({}, configs);
+    const hasChildren = args.length > 0;
+    const rawChildren = hasChildren ? [].concat(...args) : [];
+    props.children = rawChildren
+        .filter((c) => c != null && c !== false)
+        .map((c) => (c instanceof Object ? c : createTextElement(c)));
+    return { type, props };
+}
+
+function createTextElement(value) {
+    return createElement(TEXT_ELEMENT, { nodeValue: value });
 }

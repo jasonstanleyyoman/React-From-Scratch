@@ -1,24 +1,14 @@
-const element = {
-  type: "div",
-  props: {
-      id: "container",
-      children: [
-          {
-            type: "h1",
-            props: {
-              children: [
-                {
-                  type: "TEXT ELEMENT",
-                  props: {
-                    nodeValue: "Hello world"
-                  }
-                }
-              ]
-            }
-          }
-      ],
-  },
-};
+const element = createElement(
+    "div",
+    {
+        id: "container",
+    },
+    createElement(
+        "h1",
+        {},
+        createElement(TEXT_ELEMENT, { nodeValue: "Hello world" })
+    )
+);
 
 const root = document.getElementById("root");
 
